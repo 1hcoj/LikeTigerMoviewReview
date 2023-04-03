@@ -36,27 +36,27 @@ public class InitData {
             member1.setName("치현");
             member1.setQual(qualityStatus.BASIC);
             member1.setPhoneNumber("010-1111-1111");
-            em.persist(member1);
+
 
             Member member2 = new Member();
             member2.setName("남기");
             member2.setQual(qualityStatus.BASIC);
             member2.setPhoneNumber("010-2222-2222");
-            em.persist(member2);
+
 
             Movie movie1 = new Movie();
             movie1.setTitle("아이언맨");
             movie1.setRunningTime(120);
             movie1.setMainActor("로버트 다우니 주니어");
             movie1.setDirector("존 파브로");
-            em.persist(movie1);
+
 
             Movie movie2 = new Movie();
             movie2.setTitle("토르");
             movie2.setRunningTime(127);
             movie2.setMainActor("크리스 헴스워스");
             movie2.setDirector("타이카 와이티티");
-            em.persist(movie2);
+
 
             //치현 -> 아이언맨 -> 리뷰
             Review review1 = new Review();
