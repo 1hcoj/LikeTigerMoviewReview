@@ -39,4 +39,15 @@ public class MovieRepository {
         findMovie.setRunningTime(updateMovie.getRunningTime());
         return findMovie;
     }
+
+    //영화 목록 조회 API 페이징을 위한 로직
+    public List<Movie> findAllForPaging(int offset , int limit)
+    {
+        return em.createQuery("select m from Movie m",Movie.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+
+    }
+
 }

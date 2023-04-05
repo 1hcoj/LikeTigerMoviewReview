@@ -37,6 +37,7 @@ public class MemberRepository {
         Member findMember = em.find(Member.class, id);
         findMember.setName(updateMember.getName());
         findMember.setPhoneNumber(updateMember.getPhoneNumber());
+        findMember.setBirthDate(updateMember.getBirthDate());
 
         return findMember.getId();
     }

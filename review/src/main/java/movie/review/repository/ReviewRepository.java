@@ -44,4 +44,10 @@ public class ReviewRepository {
         return em.createQuery("select r from Review r",Review.class)
                 .getResultList();
     }
+
+    public List<Review>  findReviewsWithFetchJoin()
+    {
+        return em.createQuery("select r from Review r join fetch r.member me join fetch r.movie mo",Review.class)
+                .getResultList();
+    }
 }
