@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class MovieDto {
+public class SpecificMovieResponseDto {
 
     @ApiModelProperty(example = "영화 제목")
     private String title;
@@ -25,11 +25,15 @@ public class MovieDto {
     @ApiModelProperty(example = "영화 총 평점")
     private Long avgRating;
 
-    public MovieDto(Movie m) {
+    @ApiModelProperty(example = "영화 리뷰들")
+    private List<ReviewDto> reviews;
+
+    public SpecificMovieResponseDto(Movie m) {
         this.title = m.getTitle();
         this.director = m.getDirector();
         this.runningTime = m.getRunningTime();
         this.mainActor = m.getMainActor();
-        this.avgRating=m.getAvgRating();
+        this.avgRating = m.getAvgRating();
+        reviews = m.getReviews().stream().map(r-> new ReviewDto(r)).collect(Collectors.toList());
     }
 }

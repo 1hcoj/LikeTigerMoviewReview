@@ -25,4 +25,18 @@ public class Movie {
 
     @OneToMany(mappedBy = "movie")
     private List<Review> reviews = new ArrayList<>();
+
+    /**
+     * 영화 평균 평점 비즈니스 로직
+     */
+    public Long getAvgRating()
+    {
+        Long sumRating=0L;
+        for(Review review : reviews)
+        {
+            sumRating+=review.getRating();
+        }
+        return (sumRating/reviews.size());
+    }
+
 }

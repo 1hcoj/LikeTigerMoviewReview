@@ -4,7 +4,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import movie.review.controller.api.Result;
+import movie.review.domain.Movie;
 import movie.review.domain.Review;
+import movie.review.repository.MovieRepository;
 import movie.review.repository.ReviewRepository;
 import movie.review.service.ReviewService;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +21,17 @@ public class ReviewApiController {
 
     private final ReviewService reviewService;
     private final ReviewRepository reviewRepository;
+    private final MovieRepository movieRepository;
 
-    @PostMapping("api/reviews")
+    @PostMapping("api/{id}/reviews")
     @ApiOperation(value = "리뷰 등록" , notes = "리뷰 등록 API")
-    public CreateReviewResponseDto saveReview(@RequestBody CreateReviewRequestDto request)
+    public CreateReviewResponseDto saveReview(@PathVariable("id") Long id, @RequestBody CreateReviewRequestDto request)
     {
+        Movie findMovie = movieRepository.findOne(id);
         Review review = new Review();
         createReviewSetting(request, review);
         reviewService.addReview(review);
+        review.setMovie(findMovie);
         return new CreateReviewResponseDto(review.getId(), request.getComment());
     }
 
@@ -57,9 +62,7 @@ public class ReviewApiController {
     }
 
     private static void createReviewSetting(CreateReviewRequestDto request, Review review) {
-        review.setMovie(request.getMovie());
         review.setRating(request.getRating());
         review.setComment(request.getComment());
-        review.setMember(request.getMember());
     }
 }

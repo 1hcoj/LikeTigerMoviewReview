@@ -50,10 +50,25 @@ public class MovieApiController {
     public Result movies(@RequestParam(value="offset", defaultValue = "0") int offset,
                          @RequestParam(value="limit", defaultValue = "100") int limit){
         List<Movie> movies = movieRepository.findAllForPaging(offset, limit);
+        for (Movie movie : movies) {
+            System.out.println(movie.getTitle());
+            System.out.println(movie.getRunningTime());
+        }
         List<MovieDto> collect = movies.stream()
                 .map(m -> new MovieDto(m))
                 .collect(Collectors.toList());
         return new Result(collect);
+    }
+
+    @GetMapping("api/movies/{id}")
+    @ApiOperation(value="영화 상세 정보 조회" , notes = "영화 상세 정보 조회 API (리뷰 포함) ")
+    public Result movie(@PathVariable("id") Long id)
+    {
+        Movie findMovie = movieRepository.findOne(id);
+
+        SpecificMovieResponseDto dto = new SpecificMovieResponseDto(findMovie);
+
+        return new Result(dto);
     }
 
 
