@@ -2,8 +2,6 @@ package movie.review.controller.api.movie;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import movie.review.controller.api.Result;
 import movie.review.domain.Movie;

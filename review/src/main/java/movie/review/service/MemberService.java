@@ -23,9 +23,10 @@ public class MemberService {
 
     //회원 수정
     @Transactional
-    public Member update(Long id , Member updateMember){
-        Long updateId = memberRepository.updateMember(id, updateMember);
-        return memberRepository.findOne(updateId);
+    public void update(Long id , String phoneNumber , String password){
+        Member member = memberRepository.findOne(id);
+        member.setPhoneNumber(phoneNumber);
+        member.setPassword(password);
     }
 
     //회원 삭제

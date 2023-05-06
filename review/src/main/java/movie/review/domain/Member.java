@@ -26,8 +26,6 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
-    private String birthDate;
-
     private String loginId; //로그인 아이디
 
     private String password; //로그인 패스워드

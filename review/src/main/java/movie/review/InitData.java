@@ -36,14 +36,14 @@ public class InitData {
             member1.setName("치현");
             member1.setQual(qualityStatus.BASIC);
             member1.setPhoneNumber("010-1111-1111");
-            member1.setBirthDate("001224");
+
 
 
             Member member2 = new Member();
             member2.setName("남기");
             member2.setQual(qualityStatus.BASIC);
             member2.setPhoneNumber("010-2222-2222");
-            member2.setBirthDate("000918");
+
 
 
             Movie movie1 = new Movie();

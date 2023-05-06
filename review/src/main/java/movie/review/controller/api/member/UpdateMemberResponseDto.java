@@ -9,6 +9,4 @@ public class UpdateMemberResponseDto {
 
     private Long id;
     private String name;
-    private String phoneNumber;
-    private String birthDate;
 }

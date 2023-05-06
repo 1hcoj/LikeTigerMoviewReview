@@ -1,6 +1,7 @@
 package movie.review.controller.api.movie;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import movie.review.domain.Movie;
 

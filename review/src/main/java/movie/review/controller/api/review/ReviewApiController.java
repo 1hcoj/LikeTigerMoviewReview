@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @RestController
 @Api(tags = {"MovieReviewProject Review API"})
 public class ReviewApiController {
-
     private final ReviewService reviewService;
     private final ReviewRepository reviewRepository;
     private final MovieRepository movieRepository;
@@ -27,11 +26,12 @@ public class ReviewApiController {
     @ApiOperation(value = "리뷰 등록" , notes = "리뷰 등록 API")
     public CreateReviewResponseDto saveReview(@PathVariable("id") Long id, @RequestBody CreateReviewRequestDto request)
     {
+        
         Movie findMovie = movieRepository.findOne(id);
         Review review = new Review();
         createReviewSetting(request, review);
-        reviewService.addReview(review);
         review.setMovie(findMovie);
+        reviewService.addReview(review);
         return new CreateReviewResponseDto(review.getId(), request.getComment());
     }
 
@@ -44,7 +44,6 @@ public class ReviewApiController {
         Review updateReview = reviewService.updateReview(id, review);
         return new UpdateReviewResponseDto(updateReview.getId());
     }
-
     @GetMapping("api/reviews")
     @ApiOperation(value = "모든 리뷰 조회" , notes = "모든 리뷰 조회 API")
     public Result reviews()
@@ -54,13 +53,10 @@ public class ReviewApiController {
                 .collect(Collectors.toList());
         return new Result(collect);
     }
-
-
     private static void updateReviewSetting(UpdateReviewRequestDto request, Review review) {
         review.setComment(request.getComment());
         review.setRating(request.getRating());
     }
-
     private static void createReviewSetting(CreateReviewRequestDto request, Review review) {
         review.setRating(request.getRating());
         review.setComment(request.getComment());

@@ -13,9 +13,9 @@ public class Review {
     @Column(name="review_id")
     private Long id;
 
-    private int rating;
+    private int rating; //점수
 
-    private String comment;
+    private String comment; //한줄평
 
     @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
