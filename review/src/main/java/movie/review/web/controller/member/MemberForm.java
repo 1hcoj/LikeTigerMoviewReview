@@ -1,4 +1,4 @@
-package movie.review.controller.member;
+package movie.review.web.controller.member;
 
 import lombok.Data;
 

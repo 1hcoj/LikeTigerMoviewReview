@@ -8,6 +8,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+      naming:
+        # mysql 의 스네이크 케이스 -> 캐멀케이스
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         #        show_sql: true

@@ -1,6 +1,7 @@
 package movie.review.repository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import movie.review.domain.Member;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class MemberRepository {
 
     private final EntityManager em;
@@ -44,13 +46,25 @@ public class MemberRepository {
     //검색조건이 만약 있다면 findByName 같은 메소드도 만들기
 
     //회원의 로그인 ID 로 찾는 경우
-    public Optional<Member> findByLoginId(String loginId){
+//    public Optional<Member> findByLoginId(String loginId){
+//        List<Member> all = findAll();
+//        for (Member member : all) {
+//            if (member.getLoginId().equals(loginId)){
+//                return Optional.of(member);
+//            }
+//        }
+//        return Optional.empty();
+//    }
+
+    public Member findByLoginId(String loginId){
         List<Member> all = findAll();
-        for (Member member : all) {
-            if (member.getLoginId().equals(loginId)){
-                return Optional.of(member);
+
+        for (Member m : all) {
+            if(m.getLoginId().equals(loginId)){
+
+                return m;
             }
         }
-        return Optional.empty();
+        return null;
     }
 }
