@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>join</title>
+</head>
+<body>
+    <form action="" method="post" name="join_form" class="join_form">
+        <div class="join_row">
+            <H2>회원가입</H2>
+        </div>
+
+        <div class="join_row">
+            <label for="user_id">아이디</label>
+            <input type="text" class="user_id">
+        </div>
+
+        <div class="join_row">
+            <label for="user_pw">비밀번호</label>
+            <input type="password" class="user_pw">
+        </div>
+
+        <div class="join_row">
+            <label for="user_name">이름</label>
+            <input type="text" class="user_name">
+        </div>
+
+        <div class="join_row">
+            <label for="user_phone">전화번호</label>
+            <input type="text" class="user_phone">
+        </div>
+
+        <input type="button" onclick="joinform_check()" value="확인">
+        <input type="button" value="취소">
+    </form>
+
+    <script src="js/join.js"></script>
+</body>
+</html>

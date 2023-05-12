@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>movie_add</title>
+</head>
+<body>
+    <form action="" method="post" class="movie_add_form">
+        <H1>영화 등록</H1>
+        <div class="add_row">
+            <label for="title">Title</label>
+            <input type="text" class="add-movie__title">
+        </div>
+        
+        <div class="add_row">
+            <label for="director">Director</label>
+            <input type="text" class="add-movie__director">
+        </div>   
+
+        <div class="add_row">
+            <label for="actor">Actor</label>
+            <input type="text" class="add-movie__actor">
+        </div>     
+        
+        <div class="add_row">
+            <label for="time">Running Time</label>
+            <input type="number" class="add-movie__time">
+        </div>      
+        
+        <div class="add_row">
+            <label for="grade">Grade</label>
+            <input type="text" class="add-movie__grade">
+        </div>       
+        
+        <div class="add_row">
+            <label for="content">Content</label>
+            <input type="text" class="add-movie__content">
+        </div>       
+        
+        <div class="add_row">
+            <label for="poster">Movie Poster</label>
+            <input type="file" accept="image/*" class="add-movie__poster">
+        </div>
+        
+        <input type="button" onclick="addform_check()" value="확인">
+        <a href="index_admin.html">
+            <input type="button" class="cancel_btn" value="취소">
+        </a>
+    </form>
+
+    <script src="js/movie_add.js"></script>
+</body>
+</html>

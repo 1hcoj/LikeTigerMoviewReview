@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>review_add</title>
+</head>
+<body>
+    <form action="#" method="post" class="review_add_form">
+        <H1>리뷰 등록</H1>
+
+        <div>#</div>
+
+        <div class="add_row">
+            <label for="title">Title</label>
+            <input type="text" class="add-review__title">
+        </div>
+        <div class="add_row">
+            <label for="writer">Writer</label>
+            <input type="text" class="add-review__writer">
+        </div>
+        <div class="add_row">
+            <label for="score">Score</label>
+            <input type="number" class="add-review__score">
+        </div>
+        <div class="add_row">
+            <label for="content">Content</label>
+            <input type="text" class="add-review__content">
+        </div>
+        <input type="button" onclick="addform_check()" value="확인">
+        <a href="#">
+            <input type="button" class="cancel_btn" value="취소">
+        </a>
+
+    </form>
+
+
+    <script src="js/review_add.js"></script>
+</body>
+</html>
