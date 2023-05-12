@@ -15,18 +15,23 @@ public class LoginService {
 
     private final MemberRepository memberRepository;
 
-    public Member login(String loginId , String pw)
+    public Optional<Member> login(String loginId , String pw)
     {
-        Member member = memberRepository.findByLoginId(loginId);
-        if (member.getPassword().equals(pw))
-        {
-
-            return member;
-        } else{
-            return null;
-
+        Optional<Member> member_find = memberRepository.findByLoginId(loginId);
+        if (member_find.isEmpty()){
+            return Optional.empty();
         }
+        else{
+            Member member = member_find.get();
 
+            if (member.getPassword().equals(pw))
+            {
 
+                return Optional.of(member);
+            }
+            else {
+                return Optional.empty();
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,21 +38,24 @@ public class LoginController {
         if (bindingResult.hasErrors()){
             return "login/loginForm";
         }
-        Member loginMember = loginService.login(loginForm.getLoginId(), loginForm.getPassword());
-        if (loginMember == null){
+        Optional<Member> loginMember_find = loginService.login(loginForm.getLoginId(), loginForm.getPassword());
+
+
+        if (loginMember_find.isPresent()){
+            Member loginMember = loginMember_find.get();
+            //로그인 성공 처리
+            //세션이 있으면 있는 세션을 반환하고 없으면 신규 세션을 생성해서 반환
+            HttpSession session = request.getSession();
+            //세션에 로그인 회원 정보를 보관
+            session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
+            return "redirect:/";
+        }
+        else{
             bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");
             return "login/loginForm";
+
         }
 
-        //로그인 성공 처리
-        //세션이 있으면 있는 세션을 반환하고 없으면 신규 세션을 생성해서 반환
-        HttpSession session = request.getSession();
-
-        //세션에 로그인 회원 정보를 보관
-        session.setAttribute(SessionConst.LOGIN_MEMBER,loginMember);
-
-
-        return "redirect:/";
     }
 
     @PostMapping("/logout")

@@ -46,25 +46,25 @@ public class MemberRepository {
     //검색조건이 만약 있다면 findByName 같은 메소드도 만들기
 
     //회원의 로그인 ID 로 찾는 경우
-//    public Optional<Member> findByLoginId(String loginId){
-//        List<Member> all = findAll();
-//        for (Member member : all) {
-//            if (member.getLoginId().equals(loginId)){
-//                return Optional.of(member);
-//            }
-//        }
-//        return Optional.empty();
-//    }
-
-    public Member findByLoginId(String loginId){
+    public Optional<Member> findByLoginId(String loginId){
         List<Member> all = findAll();
-
-        for (Member m : all) {
-            if(m.getLoginId().equals(loginId)){
-
-                return m;
+        for (Member member : all) {
+            if (member.getLoginId().equals(loginId)){
+                return Optional.of(member);
             }
         }
-        return null;
+        return Optional.empty();
     }
+
+//    public Member findByLoginId(String loginId){
+//        List<Member> all = findAll();
+//
+//        for (Member m : all) {
+//            if(m.getLoginId().equals(loginId)){
+//
+//                return m;
+//            }
+//        }
+//        return null;
+//    }
 }
