@@ -34,8 +34,8 @@ public class InitData {
 
             Member member1 = new Member();
             member1.setName("치현");
-            member1.setLoginId("치현");
-            member1.setPassword("치현");
+            member1.setLoginId("abc");
+            member1.setPassword("abc");
             member1.setQual(qualityStatus.BASIC);
             member1.setPhoneNumber("010-1111-1111");
 
@@ -43,8 +43,8 @@ public class InitData {
 
             Member member2 = new Member();
             member2.setName("남기");
-            member2.setLoginId("남기");
-            member2.setPassword("남기");
+            member2.setLoginId("qwer");
+            member2.setPassword("qwer");
             member2.setQual(qualityStatus.BASIC);
             member2.setPhoneNumber("010-2222-2222");
 
