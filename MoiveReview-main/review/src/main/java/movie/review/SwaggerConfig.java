@@ -22,7 +22,7 @@ public class SwaggerConfig { //Swagger
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("movie.review.api"))
+                .apis(RequestHandlerSelectors.basePackage("movie.review.controller.api"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
