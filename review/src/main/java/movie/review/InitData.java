@@ -1,25 +1,35 @@
 package movie.review;
 
 import lombok.RequiredArgsConstructor;
-import movie.review.domain.Member;
-import movie.review.domain.Movie;
-import movie.review.domain.Review;
-import movie.review.domain.qualityStatus;
+import lombok.extern.slf4j.Slf4j;
+import movie.review.domain.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class InitData {
     private final initService initService;
 
     @PostConstruct
-    public void init(){
+    public void init() throws IOException, ParseException {
         initService.init();
+        initService.initPublicDataMovie();
     }
 
     @Component
@@ -79,6 +89,59 @@ public class InitData {
             review2.setRating(3);
             review2.setMember(member2);
             em.persist(review2);
+        }
+
+        public void initPublicDataMovie() throws IOException, ParseException {
+            StringBuilder urlBuilder = new StringBuilder("http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=8ce49816ac05b5c8522b414133b6ffa6&targetDt=20120101"); /*URL*/
+
+            URL url = new URL(urlBuilder.toString());
+
+            String result="";
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("GET");
+
+            conn.setRequestProperty("Content-type", "application/json");
+
+            BufferedReader rd;
+            BufferedReader bf;
+
+            log.info("Response Code : {}",conn.getResponseCode());
+
+            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+                rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                bf = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
+                result=bf.readLine();
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+                JSONObject boxOfficeResult = (JSONObject) jsonObject.get("boxOfficeResult");
+                JSONArray array = (JSONArray) boxOfficeResult.get("dailyBoxOfficeList");
+                JSONObject o = (JSONObject) array.get(1);
+                String movieNm = (String) o.get("movieNm");
+
+                for (int i=0; i<array.size();i++){
+                    JSONObject myArray = (JSONObject) array.get(i);
+                    String movieTitle = (String) myArray.get("movieNm");
+                    String movieCd = (String) myArray.get("movieCd");
+                    log.info("{} 번째의 영화 제목은 {} 번호는 {}",i,movieTitle,movieCd);
+                    PublicDataMovie movie = new PublicDataMovie();
+                    movie.setTitle(movieTitle);
+                    movie.setMovieCd(movieCd);
+                    em.persist(movie);
+                }
+
+            } else {
+                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            }
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                sb.append(line);
+            }
+            rd.close();
+            conn.disconnect();
+
         }
 
     }

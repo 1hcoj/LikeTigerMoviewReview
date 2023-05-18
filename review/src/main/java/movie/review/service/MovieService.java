@@ -2,6 +2,7 @@ package movie.review.service;
 
 import lombok.RequiredArgsConstructor;
 import movie.review.domain.Movie;
+import movie.review.domain.PublicDataMovie;
 import movie.review.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,19 @@ public class MovieService {
 
     public void delete(Movie movie){
         movieRepository.delete(movie);
+    }
+
+    /**
+     * 여기부터는 Open API 에서 가져온 Movie Data 가공 하는 Method
+     */
+
+    public void addPublicDataMovie(PublicDataMovie movie){
+        movieRepository.publicDataMovieSave(movie);
+    }
+
+    public List<PublicDataMovie> publicDataMovieFindAll(){
+        return movieRepository.publicDataMovieFindAll();
+
     }
 
 

@@ -2,6 +2,7 @@ package movie.review.repository;
 
 import lombok.RequiredArgsConstructor;
 import movie.review.domain.Movie;
+import movie.review.domain.PublicDataMovie;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -48,6 +49,18 @@ public class MovieRepository {
                 .setMaxResults(limit)
                 .getResultList();
 
+    }
+
+    /**
+     * 여기부터는 Open API 에서 가져온 Movie Data 가공 하는 Method
+     */
+    public void publicDataMovieSave(PublicDataMovie movie){
+        em.persist(movie);
+    }
+
+    public List<PublicDataMovie> publicDataMovieFindAll(){
+        return em.createQuery("select m from PublicDataMovie m", PublicDataMovie.class)
+                .getResultList();
     }
 
 }

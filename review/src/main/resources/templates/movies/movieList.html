@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>영화 제목</th>
+                <th>영화 번호</th>
+                <th>리뷰 작성</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="movie : ${movies}">
+
+                <td th:text="${movie.title}"></td>
+                <td th:text="${movie.movieCd}"></td>
+                <td><a href="#" th:href="@{/movies/{id}/revies (id=${movie.id})}">리뷰쓰기</a></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="fragments/footer :: footer" />
+
+</div> <!-- /container -->
+
+</body>
+</html>
