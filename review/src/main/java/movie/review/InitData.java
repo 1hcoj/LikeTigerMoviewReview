@@ -3,12 +3,13 @@ package movie.review;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import movie.review.domain.*;
+import movie.review.repository.PublicDataMovieRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -31,7 +32,8 @@ public class InitData {
     @PostConstruct
     public void init() throws IOException, ParseException {
         initService.init();
-        initService.initPublicDataMovie();
+        initService.initPublicDataMovie(); //Open API 가져오기
+        initService.manufactureMovieData(); // 가져온 Public Data 를 가공해서 Movie Table 에 담기
     }
 
     @Component
@@ -39,6 +41,7 @@ public class InitData {
     @RequiredArgsConstructor
     static class initService {
         private final EntityManager em;
+        private final PublicDataMovieRepository publicDataMovieRepository;
 
         public void init() {
 
@@ -91,20 +94,21 @@ public class InitData {
             review2.setMember(member2);
             em.persist(review2);
         }
+
         public void initPublicDataMovie() throws IOException, ParseException {
 //            StringBuilder urlBuilder = new StringBuilder("http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=8ce49816ac05b5c8522b414133b6ffa6&targetDt=20120101"); /*URL*/
 
 
             //urlBuilder.append("&api_key=" + api_key);
             // Date(targetDt) 가 담겨있는 List
-            int[] movieDate = {20120101,20120201,20120301,20120401,20120501,20120601,20120701,20120801,20120901,20121001,20121101,20121201};
+            int[] movieDate = {20120101, 20120201, 20120301, 20120401, 20120501, 20120601, 20120701, 20120801, 20120901, 20121001, 20121101, 20121201};
 
             // 각 Date 에 따른 API 즉 StringBuilder 을 담는 List
             ArrayList<StringBuilder> urlBuilders = new ArrayList<StringBuilder>();
 
-            for (int i=0; i<movieDate.length;i++){
+            for (int i = 0; i < movieDate.length; i++) {
                 StringBuilder urlBuilder = new StringBuilder("http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=8ce49816ac05b5c8522b414133b6ffa6");
-                urlBuilder.append("&targetDt="+movieDate[i]);
+                urlBuilder.append("&targetDt=" + movieDate[i]);
                 urlBuilders.add(urlBuilder);
             }
 
@@ -118,7 +122,7 @@ public class InitData {
 
             for (URL url : urls) {
 
-                String result="";
+                String result = "";
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -129,24 +133,22 @@ public class InitData {
                 BufferedReader rd;
                 BufferedReader bf;
 
-                log.info("Response Code : {}",conn.getResponseCode());
+                log.info("Response Code : {}", conn.getResponseCode());
 
                 if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
                     rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    bf = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
-                    result=bf.readLine();
+                    bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+                    result = bf.readLine();
                     JSONParser jsonParser = new JSONParser();
                     JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
                     JSONObject boxOfficeResult = (JSONObject) jsonObject.get("boxOfficeResult");
                     JSONArray array = (JSONArray) boxOfficeResult.get("dailyBoxOfficeList");
-                    JSONObject o = (JSONObject) array.get(1);
-                    String movieNm = (String) o.get("movieNm");
 
-                    for (int i=0; i<array.size();i++){
+                    for (int i = 0; i < array.size(); i++) {
                         JSONObject myArray = (JSONObject) array.get(i);
                         String movieTitle = (String) myArray.get("movieNm");
                         String movieCd = (String) myArray.get("movieCd");
-                        log.info("{} 번째의 영화 제목은 {} 번호는 {}",i,movieTitle,movieCd);
+
                         PublicDataMovie movie = new PublicDataMovie();
                         movie.setTitle(movieTitle);
                         movie.setMovieCd(movieCd);
@@ -166,5 +168,121 @@ public class InitData {
 
             }
         }
+
+        public void manufactureMovieData() throws IOException, ParseException {
+
+            List<PublicDataMovie> movies = publicDataMovieRepository.findAll();
+            ArrayList<StringBuilder> urlBuilders = new ArrayList<StringBuilder>();
+
+            for (PublicDataMovie movie : movies) {
+
+                StringBuilder urlBuilder = new StringBuilder("http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=f5eef3421c602c6cb7ea224104795888");
+                urlBuilder.append("&movieCd=" + movie.getMovieCd());
+
+                urlBuilders.add(urlBuilder);
+            }
+
+
+            // 각 url 을 담을 List
+            ArrayList<URL> urls = new ArrayList<URL>();
+
+            for (StringBuilder urlBuilder : urlBuilders) {
+
+                URL url = new URL(urlBuilder.toString());
+                urls.add(url);
+            }
+
+
+            for (URL url : urls) {
+
+
+                String result = "";
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                conn.setRequestMethod("GET");
+
+                conn.setRequestProperty("Content-type", "application/json");
+
+                BufferedReader rd;
+                BufferedReader bf;
+
+
+                log.info("manufactureMovieData Response Code : {}", conn.getResponseCode());
+
+                if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+
+                    rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+                    result = bf.readLine();
+
+                    JSONParser jsonParser = new JSONParser();
+                    JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+                    JSONObject movieInfoResult = (JSONObject) jsonObject.get("movieInfoResult");
+                    JSONObject movieInfo = (JSONObject) movieInfoResult.get("movieInfo");
+
+                    //영화감독 이름 파싱
+                    JSONArray directors = (JSONArray) movieInfo.get("directors");
+                    JSONObject directorsPeopleNm = (JSONObject) directors.get(0);
+                    String directorName = (String) directorsPeopleNm.get("peopleNm");
+
+                    JSONArray genres = (JSONArray) movieInfo.get("genres");
+
+                    JSONArray actors = (JSONArray) movieInfo.get("actors");
+
+//                    System.out.println("개봉일 : " + movieInfo.get("openDt"));
+//                    System.out.println("제작국가명 : " + nations_nationNm.get("nationNm"));
+
+                    String title = (String) movieInfo.get("movieNm");
+                    String runningTime = (String) movieInfo.get("showTm");
+
+                    //영화 관람 시간 파싱
+                    int parse_runningTime = 0;
+
+                    try {
+                        parse_runningTime = Integer.parseInt(runningTime);
+                    } catch (NumberFormatException ex) {
+                        ex.printStackTrace();
+                    }
+
+
+                    Movie movie = new Movie();
+                    movie.setTitle(title);
+                    movie.setRunningTime(parse_runningTime);
+                    movie.setDirector(directorName);
+
+                    //주연배우 이름 파싱
+                    JSONObject actorsPeopleNm = (JSONObject)actors.get(0);
+                    String peopleNm = (String) actorsPeopleNm.get("peopleNm");
+
+                    movie.setMainActor(peopleNm);
+
+
+                    //영화 장르
+
+//                    String genreNm = "";
+//
+//                    for (int i = 0; i < genres.size(); i++) {
+//                        JSONObject genres_genreNm = (JSONObject) genres.get(i);
+//                        genreNm += genres_genreNm.get("genreNm") + " ";
+//                    }
+
+
+                    em.persist(movie);
+
+                } else {
+                    rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                }
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = rd.readLine()) != null) {
+                    sb.append(line);
+                }
+                rd.close();
+                conn.disconnect();
+
+            }
+        }
     }
 }
+
