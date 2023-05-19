@@ -3,6 +3,7 @@ package com.hyeon.moviereview
 import android.content.Context
 import android.os.Bundle
 import android.se.omapi.Session
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +58,7 @@ class LoginFragment : Fragment() {
                 }
                 is BaseResponse.Success ->{
                     stopLoading()
+                    viewModel.userName = it.data?.name
                     processLogin(it.data)
                 }
                 is BaseResponse.Error ->{
@@ -98,8 +100,12 @@ class LoginFragment : Fragment() {
      *      3. Home Page 로 넘어감
      * */
     private fun processLogin(data: LoginResponse?) {
-        if (!data?.data?.token.isNullOrEmpty()){
-            data?.data?.token?.let { SessionManager.saveAuthToken(mainActivity, it) }
+        /* if (!data?.data.token.isNullOrEmpty()){
+            data?.data.token?.let { SessionManager.saveAuthToken(mainActivity, it) }
+            navigateToHome()
+        } */
+        if (!data?.token.isNullOrEmpty()){
+            data?.token?.let { SessionManager.saveAuthToken(mainActivity, it) }
             navigateToHome()
         }
     }

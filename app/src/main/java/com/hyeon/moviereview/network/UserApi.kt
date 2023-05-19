@@ -1,5 +1,6 @@
 package com.hyeon.moviereview.network
 
+import android.util.Log
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -19,6 +20,7 @@ interface UserApi {
          * create : Retrofit 객체 생성 !! { parameter : API 통신을 위한 Interface }
          * */
         fun getApi() : UserApi? {
+            Log.d("조치현","7")
             return ApiClient.client?.create(UserApi::class.java)
         }
     }

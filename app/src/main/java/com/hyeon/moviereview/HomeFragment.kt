@@ -41,9 +41,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /** 일단은 껏다가 키면 안됨 -> 껐다가 다시 킬 때, DB 에서 가져오는 과정 필요 !! */
+        viewModel.userName?.let{
+            binding.textView1.text = it + "님 환영합니다."
+        }
+//        binding.textView1.text = viewModel.userName + "님 환영합니다."
 
         binding.buttonLogOut.setOnClickListener {
-
             SessionManager.clearData(mainActivity)
             navController.navigate(R.id.action_homeFragment_to_loginFragment)
         }
