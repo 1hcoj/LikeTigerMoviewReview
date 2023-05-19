@@ -48,6 +48,12 @@ public class InitData {
             // 새로운 회원 2명이 각 영화 1개씩을 보고 리뷰 하는 initData 생성
             // 양방향 연관관계라 연관관계 메서드도 만들어야함 cascadeALL , 고아객체? 이거 설정하기
 
+            Member test = new Member();
+            test.setName("test");
+            test.setLoginId("123");
+            test.setPassword("123");
+            em.persist(test);
+
             Member member1 = new Member();
             member1.setName("치현");
             member1.setLoginId("치현");

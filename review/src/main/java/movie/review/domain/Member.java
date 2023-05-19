@@ -29,4 +29,7 @@ public class Member {
     private String loginId; //로그인 아이디
 
     private String password; //로그인 패스워드
+
+    //앱을 위한 Token
+    private String token;
 }

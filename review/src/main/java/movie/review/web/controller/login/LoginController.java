@@ -55,7 +55,6 @@ public class LoginController {
             return "login/loginForm";
 
         }
-
     }
 
     @PostMapping("/logout")

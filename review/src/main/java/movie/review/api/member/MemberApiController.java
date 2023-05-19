@@ -29,6 +29,8 @@ public class MemberApiController {
         Member newMember = createMemberSetting(request, member);
         memberService.join(newMember);
         return new CreateMemberResponseDto(newMember.getId());
+
+        // Member
     }
 
 

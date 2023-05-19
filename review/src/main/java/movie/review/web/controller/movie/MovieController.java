@@ -1,6 +1,7 @@
 package movie.review.web.controller.movie;
 
 import lombok.RequiredArgsConstructor;
+import movie.review.domain.Movie;
 import movie.review.domain.PublicDataMovie;
 import movie.review.service.MovieService;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,8 @@ public class MovieController {
     @GetMapping("/movies")
     public String showMovie(Model model){
 
-        List<PublicDataMovie> movies = movieService.publicDataMovieFindAll();
+        List<Movie> movies = movieService.findAll();
         model.addAttribute("movies",movies);
-
         return "movies/movieList";
 
     }

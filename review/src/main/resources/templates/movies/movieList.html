@@ -11,8 +11,9 @@
             <thead>
             <tr>
                 <th>영화 제목</th>
-                <th>영화 번호</th>
-                <th>리뷰 작성</th>
+                <th>러닝타임</th>
+                <th>주연배우</th>
+                <th>감독</th>
             </tr>
             </thead>
             <tbody>
@@ -20,7 +21,9 @@
             <tr th:each="movie : ${movies}">
 
                 <td th:text="${movie.title}"></td>
-                <td th:text="${movie.movieCd}"></td>
+                <td th:text="${movie.runningTime}"></td>
+                <td th:text="${movie.mainActor}"></td>
+                <td th:text="${movie.director}"></td>
                 <td><a href="#" th:href="@{/movies/{id}/revies (id=${movie.id})}">리뷰쓰기</a></td>
             </tr>
 
