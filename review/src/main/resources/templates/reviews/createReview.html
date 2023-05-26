@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+
+<style>
+
+</style>
+
+<body>
+
+<div class="container">
+
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+  <form th:object="${form}" method="post">
+
+    <div class="form-group">
+      <label th:for="movieTitle">영화 제목</label>
+      <input type="text" th:field="*{movieTitle}" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+      <label th:for="registerReviewMember">회원 이름</label>
+      <input type="text" th:field="*{registerReviewMember}" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+      <label th:for="score">리뷰 점수(0 ~ 5)</label>
+      <input type="number" th:field="*{score}" class="form-control" placeholder="점수를 입력하세요 (0점 ~ 5점)" />
+    </div>
+
+    <div class="form-group">
+      <label th:for="comment">한줄평</label>
+      <input type="text" th:field="*{comment}" class="form-control"  placeholder="한 줄로 코멘트를 남겨주세요" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">등록하기</button>
+  </form>
+
+
+
+  <div th:replace="fragments/footer :: footer" />
+</div>
+
+
+</body>
+</html>

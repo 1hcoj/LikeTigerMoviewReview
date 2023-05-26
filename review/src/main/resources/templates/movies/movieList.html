@@ -6,7 +6,17 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
 
-    <div>
+<!--    <div>-->
+<!--        <div>-->
+<!--            <form th:object="${movieSearch}" class="form-inline">-->
+<!--                <div class="form-group mb-2">-->
+<!--                    <input type="text" th:field="*{movieName}" class="form-control" placeholder="영화 제목"/>-->
+<!--                </div>-->
+<!--                <button type="submit" class="btn btn-primary mb-2">검색</button>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    <div>-->
+
         <table class="table table-striped">
             <thead>
             <tr>
@@ -20,11 +30,12 @@
 
             <tr th:each="movie : ${movies}">
 
-                <td th:text="${movie.title}"></td>
+                <td><a href="#" th:href="@{/movies/{id}/reviews (id=${movie.id})}" th:text="|${movie.title}|">리뷰확인</a></td>
+
                 <td th:text="${movie.runningTime}"></td>
                 <td th:text="${movie.mainActor}"></td>
                 <td th:text="${movie.director}"></td>
-                <td><a href="#" th:href="@{/movies/{id}/revies (id=${movie.id})}">리뷰쓰기</a></td>
+                <td><a href="#" th:href="@{/movies/{id}/review (id=${movie.id})}">리뷰쓰기</a></td>
             </tr>
 
             </tbody>

@@ -2,10 +2,12 @@ package movie.review.web.controller.member;
 
 import lombok.RequiredArgsConstructor;
 import movie.review.domain.Member;
+import movie.review.domain.Review;
 import movie.review.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -38,6 +40,18 @@ public class MemberController {
         List<Member> members = memberService.findMembers();
         model.addAttribute("members",members);
         return "members/memberList";
+    }
+
+
+    @GetMapping("/members/{id}/info")
+    public String showMemberInfo(@PathVariable("id") Long id,Model model){
+
+        Member member = memberService.findOne(id);
+        List<Review> reviews = memberService.findMemberAndReview(member);
+        model.addAttribute("reviews",reviews);
+        return "members/memberInfo";
+
+
     }
 
     private static void createMember(MemberForm memberForm, Member member) {

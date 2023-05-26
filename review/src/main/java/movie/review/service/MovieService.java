@@ -1,9 +1,10 @@
 package movie.review.service;
 
 import lombok.RequiredArgsConstructor;
-import movie.review.domain.Movie;
-import movie.review.domain.PublicDataMovie;
+import movie.review.domain.*;
+import movie.review.repository.MemberRepository;
 import movie.review.repository.MovieRepository;
+import movie.review.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,8 @@ import java.util.List;
 public class MovieService {
 
     private final MovieRepository movieRepository;
+    private final ReviewRepository reviewRepository;
+    private final MemberRepository memberRepository;
 
     //영화 등록
     @Transactional
@@ -55,7 +58,21 @@ public class MovieService {
 
     }
 
+    public List<Movie> findByMovieName(MovieSearch movieSearch){
+        return movieRepository.findByMovieName(movieSearch);
+    }
 
 
+    @Transactional
+    public List<Review> findByReviewOfMovie(Movie movie) {
+        Movie findMovie = movieRepository.findOne(movie.getId());
+        List<Review> reviews = findMovie.getReviews();
+        for (Review review : reviews) {
+            reviewRepository.findOne(review.getId());
+            memberRepository.findOne(review.getMember().getId());
+            movieRepository.findOne(review.getId());
+        }
 
+        return reviews;
+    }
 }

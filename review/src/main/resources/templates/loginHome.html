@@ -14,6 +14,9 @@
     <div class="jumbotron">
         <h1>Like Tiger :) 영화 리뷰 프로젝트 </h1>
         <h4 class="mb-3" th:text="|${member.name} 님 환영합니다 !|">로그인 사용자 이름</h4>
+
+        <a href="#" th:href="@{/members/{id}/info (id=${member.id})}">마이페이지</a>
+
         <p class="lead">회원 기능</p>
         <p>
             <a class="btn btn-lg btn-secondary" href="/members/new">회원 가입</a>

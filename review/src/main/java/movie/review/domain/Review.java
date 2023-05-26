@@ -2,8 +2,12 @@ package movie.review.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import movie.review.web.SessionConst;
 
 import javax.persistence.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -45,4 +49,6 @@ public class Review {
         this.movie = movie;
         movie.getReviews().add(this);
     }
+
+
 }

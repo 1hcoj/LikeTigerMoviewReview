@@ -32,8 +32,8 @@ public class InitData {
     @PostConstruct
     public void init() throws IOException, ParseException {
         initService.init();
-        initService.initPublicDataMovie(); //Open API 가져오기
-        initService.manufactureMovieData(); // 가져온 Public Data 를 가공해서 Movie Table 에 담기
+//        initService.initPublicDataMovie(); //Open API 가져오기
+//        initService.manufactureMovieData(); // 가져온 Public Data 를 가공해서 Movie Table 에 담기
     }
 
     @Component
